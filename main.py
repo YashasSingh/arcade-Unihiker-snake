@@ -130,3 +130,25 @@ while True:
         snake = [new_head] + snake[:-1]  # Normal movement
 
     time.sleep(speed)
+
+
+
+    level = 1  # Start at level 1
+obstacles = []  # List to store obstacle positions
+
+# Adjust the initialize_game function to reset levels and obstacles
+def initialize_game():
+    global snake, direction, apple, score, speed, speed_decrement, level, obstacles
+    snake = [(5, 5), (4, 5), (3, 5)]
+    direction = (1, 0)
+    apple = generate_apple()
+    score = 0
+    speed = 0.5
+    speed_decrement = 0.02
+    level = 1
+    obstacles = generate_obstacles(level)
+
+# Generate obstacles based on the current level
+def generate_obstacles(level):
+    obstacle_count = level * 2  # Increase obstacles as the level increases
+    return [(random.randint(0, WIDTH - 1), random.randint(0, HEIGHT - 1)) for _ in range(obstacle_count)]
