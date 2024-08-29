@@ -19,10 +19,11 @@ button_restart = Pin(Pin.P2, Pin.IN)  # Restart button connected to Pin P2
 
 # Function to initialize the game state
 def initialize_game():
-    global snake, direction, apple
+    global snake, direction, apple, score
     snake = [(5, 5), (4, 5), (3, 5)]
     direction = (1, 0)  # Moving right initially
     apple = generate_apple()
+    score = 0  # Initialize score to 0
 
 # Generate random apple position
 def generate_apple():
@@ -40,6 +41,9 @@ def draw_snake():
     
     # Draw the apple
     gui.draw_rectangle(apple[0] * GRID_SIZE, apple[1] * GRID_SIZE, GRID_SIZE, GRID_SIZE, fill="red")
+    
+    # Draw the score
+    gui.draw_text(10, 10, f"Score: {score}", fill="white", size=16)
     
     gui.show()
 
@@ -67,7 +71,8 @@ def check_collision(new_head):
 def game_over():
     gui.clear()
     gui.draw_text(gui.width() // 2 - 50, gui.height() // 2 - 10, "Game Over", fill="red", size=24)
-    gui.draw_text(gui.width() // 2 - 80, gui.height() // 2 + 20, "Press Restart to Play Again", fill="blue", size=16)
+    gui.draw_text(gui.width() // 2 - 80, gui.height() // 2 + 20, f"Final Score: {score}", fill="blue", size=16)
+    gui.draw_text(gui.width() // 2 - 80, gui.height() // 2 + 50, "Press Restart to Play Again", fill="blue", size=16)
     gui.show()
     
     # Wait for the restart button to be pressed
@@ -105,6 +110,7 @@ while True:
     if new_head == apple:
         snake.insert(0, new_head)  # Grow the snake
         apple = generate_apple()  # Spawn a new apple
+        score += 1  # Increase the score by 1
     else:
         snake = [new_head] + snake[:-1]  # Normal movement
 
