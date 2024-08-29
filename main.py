@@ -12,13 +12,17 @@ GRID_SIZE = 20
 WIDTH = gui.width() // GRID_SIZE
 HEIGHT = gui.height() // GRID_SIZE
 
-# Initial snake setup
-snake = [(5, 5), (4, 5), (3, 5)]
-direction = (1, 0)  # Moving right initially
-
 # Setup buttons
 button_left = Pin(Pin.P0, Pin.IN)  # Left button connected to Pin P0
 button_right = Pin(Pin.P1, Pin.IN)  # Right button connected to Pin P1
+button_restart = Pin(Pin.P2, Pin.IN)  # Restart button connected to Pin P2
+
+# Function to initialize the game state
+def initialize_game():
+    global snake, direction, apple
+    snake = [(5, 5), (4, 5), (3, 5)]
+    direction = (1, 0)  # Moving right initially
+    apple = generate_apple()
 
 # Generate random apple position
 def generate_apple():
@@ -26,8 +30,6 @@ def generate_apple():
         apple = (random.randint(0, WIDTH - 1), random.randint(0, HEIGHT - 1))
         if apple not in snake:
             return apple
-
-apple = generate_apple()
 
 def draw_snake():
     gui.clear()  # Clear the screen
@@ -61,6 +63,23 @@ def check_collision(new_head):
         return True
     return False
 
+# Function to display game over and wait for restart
+def game_over():
+    gui.clear()
+    gui.draw_text(gui.width() // 2 - 50, gui.height() // 2 - 10, "Game Over", fill="red", size=24)
+    gui.draw_text(gui.width() // 2 - 80, gui.height() // 2 + 20, "Press Restart to Play Again", fill="blue", size=16)
+    gui.show()
+    
+    # Wait for the restart button to be pressed
+    while button_restart.read() != 0:
+        time.sleep(0.1)
+
+    # Restart the game
+    initialize_game()
+
+# Initialize game state
+initialize_game()
+
 # Main loop
 while True:
     draw_snake()
@@ -79,11 +98,8 @@ while True:
 
     # Check for collisions
     if check_collision(new_head):
-        # Game over: display message and break loop
-        gui.clear()
-        gui.draw_text(gui.width() // 2 - 50, gui.height() // 2 - 10, "Game Over", fill="red", size=24)
-        gui.show()
-        break
+        game_over()  # Handle game over and wait for restart
+        continue  # Skip the rest of the loop to restart the game
 
     # Check if the snake eats the apple
     if new_head == apple:
