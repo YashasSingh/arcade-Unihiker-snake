@@ -134,7 +134,7 @@ while True:
 
 
     level = 1  # Start at level 1
-    
+
 obstacles = []  # List to store obstacle positions
 
 # Adjust the initialize_game function to reset levels and obstacles
@@ -171,3 +171,4 @@ def draw_snake():
     gui.draw_text(10, 50, f"Level: {level}", fill="white", size=16)
     draw_obstacles()  # Draw obstacles on the screen
     gui.show()
+    
