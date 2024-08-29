@@ -134,6 +134,7 @@ while True:
 
 
     level = 1  # Start at level 1
+    
 obstacles = []  # List to store obstacle positions
 
 # Adjust the initialize_game function to reset levels and obstacles
@@ -152,3 +153,21 @@ def initialize_game():
 def generate_obstacles(level):
     obstacle_count = level * 2  # Increase obstacles as the level increases
     return [(random.randint(0, WIDTH - 1), random.randint(0, HEIGHT - 1)) for _ in range(obstacle_count)]
+# Draw obstacles on the screen
+def draw_obstacles():
+    for obstacle in obstacles:
+        x, y = obstacle
+        gui.draw_rectangle(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE, fill="gray")
+
+# Update the draw_snake function to include obstacles
+def draw_snake():
+    gui.clear()
+    for segment in snake:
+        x, y = segment
+        gui.draw_rectangle(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE, fill="green")
+    gui.draw_rectangle(apple[0] * GRID_SIZE, apple[1] * GRID_SIZE, GRID_SIZE, GRID_SIZE, fill="red")
+    gui.draw_text(10, 10, f"Score: {score}", fill="white", size=16)
+    gui.draw_text(10, 30, f"High Score: {high_score}", fill="yellow", size=16)
+    gui.draw_text(10, 50, f"Level: {level}", fill="white", size=16)
+    draw_obstacles()  # Draw obstacles on the screen
+    gui.show()
