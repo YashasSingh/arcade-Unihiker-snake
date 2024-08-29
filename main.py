@@ -19,11 +19,13 @@ button_restart = Pin(Pin.P2, Pin.IN)  # Restart button connected to Pin P2
 
 # Function to initialize the game state
 def initialize_game():
-    global snake, direction, apple, score
+    global snake, direction, apple, score, speed, speed_decrement
     snake = [(5, 5), (4, 5), (3, 5)]
     direction = (1, 0)  # Moving right initially
     apple = generate_apple()
     score = 0  # Initialize score to 0
+    speed = 0.5  # Initial speed (time delay between moves)
+    speed_decrement = 0.02  # How much to decrease the delay as the score increases
 
 # Generate random apple position
 def generate_apple():
@@ -111,7 +113,9 @@ while True:
         snake.insert(0, new_head)  # Grow the snake
         apple = generate_apple()  # Spawn a new apple
         score += 1  # Increase the score by 1
+        # Decrease the speed (increase the snake's speed)
+        speed = max(0.1, speed - speed_decrement)  # Don't let the speed go below 0.1
     else:
         snake = [new_head] + snake[:-1]  # Normal movement
 
-    time.sleep(0.5)
+    time.sleep(speed)
