@@ -171,4 +171,29 @@ def draw_snake():
     gui.draw_text(10, 50, f"Level: {level}", fill="white", size=16)
     draw_obstacles()  # Draw obstacles on the screen
     gui.show()
-    
+    # Adjust collision detection to include obstacles
+def check_collision(new_head):
+    if new_head[0] < 0 or new_head[0] >= WIDTH or new_head[1] < 0 or new_head[1] >= HEIGHT:
+        return True
+    if new_head in snake[:-1]:
+        return True
+    if new_head in obstacles:  # Check collision with obstacles
+        return True
+    return False
+
+# Level progression
+def level_up():
+    global level, speed, obstacles
+    level += 1
+    speed = max(0.1, speed - 0.05)  # Increase speed as level goes up
+    obstacles = generate_obstacles(level)
+
+# Modify the main loop to include level progression
+while True:
+    draw_snake()
+    if button_left.read() == 0:
+        turn_left()
+        time.sleep(0.2)
+    elif button_right.read() == 0:
+        turn_right()
+        time.sleep(0.2)
