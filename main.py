@@ -17,6 +17,9 @@ button_left = Pin(Pin.P0, Pin.IN)  # Left button connected to Pin P0
 button_right = Pin(Pin.P1, Pin.IN)  # Right button connected to Pin P1
 button_restart = Pin(Pin.P2, Pin.IN)  # Restart button connected to Pin P2
 
+# High score tracking
+high_score = 0  # Initialize high score to 0
+
 # Function to initialize the game state
 def initialize_game():
     global snake, direction, apple, score, speed, speed_decrement
@@ -46,6 +49,8 @@ def draw_snake():
     
     # Draw the score
     gui.draw_text(10, 10, f"Score: {score}", fill="white", size=16)
+    # Draw the high score
+    gui.draw_text(10, 30, f"High Score: {high_score}", fill="yellow", size=16)
     
     gui.show()
 
@@ -71,10 +76,16 @@ def check_collision(new_head):
 
 # Function to display game over and wait for restart
 def game_over():
+    global high_score
+    # Update high score if the current score is greater
+    if score > high_score:
+        high_score = score
+    
     gui.clear()
     gui.draw_text(gui.width() // 2 - 50, gui.height() // 2 - 10, "Game Over", fill="red", size=24)
     gui.draw_text(gui.width() // 2 - 80, gui.height() // 2 + 20, f"Final Score: {score}", fill="blue", size=16)
-    gui.draw_text(gui.width() // 2 - 80, gui.height() // 2 + 50, "Press Restart to Play Again", fill="blue", size=16)
+    gui.draw_text(gui.width() // 2 - 80, gui.height() // 2 + 50, f"High Score: {high_score}", fill="yellow", size=16)
+    gui.draw_text(gui.width() // 2 - 80, gui.height() // 2 + 80, "Press Restart to Play Again", fill="blue", size=16)
     gui.show()
     
     # Wait for the restart button to be pressed
