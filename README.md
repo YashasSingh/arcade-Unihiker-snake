@@ -1,5 +1,6 @@
 
 # UniHiker Snake Game
+![image](https://github.com/user-attachments/assets/50fed191-93fa-4f16-bb64-d58d9ea7bca8)
 
 This project is a modern take on the classic Snake game, developed for the UniHiker platform. The game includes various features such as increasing difficulty, power-ups, and high score tracking, making it an engaging and challenging experience.
 
